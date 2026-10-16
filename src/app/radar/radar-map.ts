@@ -291,6 +291,16 @@ export class RadarMap implements AfterViewInit, OnDestroy {
     this.updateRadarProperty({ [key]: Math.min(hi, Math.max(lo, v)) });
   }
 
+  // Quick picks for the beam range (default 20 km).
+  protected readonly rangePresetsKm = [5, 10, 20, 50, 100];
+
+  /** A range typed or picked in km. */
+  onRangeKmChange(value: string): void {
+    const km = +value;
+    if (value.trim() === '' || !Number.isFinite(km)) return;
+    this.onBeamChange('beamRange', '' + Math.round(km * 1000));
+  }
+
   onStyleChange(patch: Partial<RadarStyle>): void {
     // Switching mode resets the footprint to that mode's default: on in
     // "0° up to this angle", off in "Only this angle". Entering "0° up to
